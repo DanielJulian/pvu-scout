@@ -30,11 +30,11 @@ class DiscordClient(discord.Client):
     async def send_message(self, message):
         text_channels = self.guilds[0].text_channels
         for channel in text_channels:
-            if channel.id == 734752242053414923:
+            if channel.id == 879373144077512714:
                 await channel.send(message)
     
     async def send_embed(self, message):
         text_channels = self.guilds[0].text_channels
         for channel in text_channels:
-            if channel.id == 734752242053414923:
+            if channel.id == 879373144077512714:
                 await channel.send(embed=message)

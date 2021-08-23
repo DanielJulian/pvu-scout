@@ -1,5 +1,5 @@
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 
 plant_base_url = 'https://backend-farm.plantvsundead.com/farms/'
 
@@ -19,9 +19,9 @@ def get_plant_data(plant_id):
     data = dict()
 
     if (response['status'] == 0): # status = 0 -> OK
-        data['url'] = plant_base_url + response['data']['_id']
+        data['url'] = "https://marketplace.plantvsundead.com/farm#/farm/" + response['data']['_id']
         waterEndTime = response['data']['activeTools'][1]['endTime'].replace("T", " ").split(".")[0]
-        data['waterEndTime'] = datetime.strptime(waterEndTime, '%Y-%m-%d %H:%M:%S')
+        data['waterEndTime'] = datetime.strptime(waterEndTime, '%Y-%m-%d %H:%M:%S') - timedelta(hours=3)
     
     return data
     
