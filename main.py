@@ -3,6 +3,7 @@ from plant_api import get_plant_data
 from queue import PriorityQueue
 from manager import Manager
 import _thread
+import asyncio
 
 def main():
     
@@ -16,8 +17,9 @@ def main():
 
 
     # Fetch plants data and feed priority queue
-    fetch_plants_data(queue)
-
+    # fetch_plants_data(queue)
+    queue.put((123,{'waterEndTime': 5, 'url': 'https://www.google.com.ar/'}))
+    queue.put((123,{'waterEndTime': 5, 'url': 'https://www.google.com.ar/'}))
 
     # Initialize Manager
     manager = Manager(queue, discord_client)
