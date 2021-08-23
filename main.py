@@ -17,9 +17,8 @@ def main():
 
 
     # Fetch plants data and feed priority queue
-    # fetch_plants_data(queue)
-    queue.put((123,{'waterEndTime': 5, 'url': 'https://www.google.com.ar/'}))
-    queue.put((123,{'waterEndTime': 5, 'url': 'https://www.google.com.ar/'}))
+    fetch_plants_data(queue)
+    # queue.put((123,{'waterEndTime': 5, 'url': 'https://www.google.com.ar/'}))
 
     # Initialize Manager
     manager = Manager(queue, discord_client)
