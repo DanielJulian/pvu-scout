@@ -13,6 +13,7 @@ class Manager():
 
 
     def start_plants_monitor(self):
+      # queue.put((123,{'waterEndTime': datetime.now() + timedelta(minutes=2), 'url': 'https://www.google.com.ar/'}))
       discord_loop = self.discord_client.loop
       while True:
         try:

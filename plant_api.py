@@ -20,6 +20,7 @@ def get_plant_data(plant_id):
         jsonresponse = response.json()
 
         if (jsonresponse['status'] == 0): # status = 0 -> OK
+            data['id'] = plant_id
             data['url'] = "https://marketplace.plantvsundead.com/farm#/farm/" + jsonresponse['data']['_id']
             waterEndTime = jsonresponse['data']['activeTools'][1]['endTime'].replace("T", " ").split(".")[0]
             data['waterEndTime'] = datetime.strptime(waterEndTime, '%Y-%m-%d %H:%M:%S') - timedelta(hours=3)
@@ -27,6 +28,7 @@ def get_plant_data(plant_id):
     except Exception as e:
         print(response)
         print(e)
+        return None
         
     return data
     
