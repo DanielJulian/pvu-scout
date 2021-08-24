@@ -15,6 +15,7 @@ class Manager():
     def start_plants_monitor(self):
       discord_loop = self.discord_client.loop
       while True:
+        try:
           time.sleep(5)
           plant_tuple = self.queue.get()
           plant = plant_tuple[1]
@@ -23,16 +24,15 @@ class Manager():
 
           if ((plant['waterEndTime'] - datetime.now()).total_seconds() <= 60):
 
-
-            # https://stackoverflow.com/questions/49835742/how-to-send-a-message-with-discord-py-without-a-command
-
-            print(1)
+            print("Sending message to discord: ", plant)
             embed = Embed(title="Plant Refresh", description="A plant is about to refresh", colour=0x0000FF)
             embed.add_field(name="URL", value=plant['url'], inline=False)
             embed.add_field(name="Refresh Time", value=plant['waterEndTime'], inline=False)
             embed.set_author(name="PVU Scout")
             embed.set_footer(text="Salu2")
             discord_loop.create_task(self.discord_client.send_embed(embed))
-            print(2)
+            print("Message sent")
           else:
             self.queue.put(plant_tuple)
+        except Exception as e:
+          print(e)
