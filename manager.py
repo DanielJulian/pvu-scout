@@ -20,13 +20,10 @@ class Manager():
         try:
           time.sleep(5)
           plant_tuple = self.queue.get()
-          print(plant_tuple)
           plant = plant_tuple[2]
 
           # TODO If the water_end_time is equal or less than 1 minute, post it to discord, else, put it back to the queue.
-          print(plant)
           if ((plant['water_end_time'] - datetime.now()).total_seconds() <= 60):
-            
             print("Sending message to discord: ", plant)
             url = "https://marketplace.plantvsundead.com/farm#/farm/" + plant['id']
             embed = Embed(title="Plant Refresh", description="A plant is about to refresh", colour=0x0000FF)

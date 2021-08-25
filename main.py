@@ -78,7 +78,6 @@ def feed_queue_with_yet_to_refresh_plants_db(database, queue):
     plants = database.select_yet_to_refresh_plants()
     print(len(plants), "plants fetched")
     for plant in plants:
-        print(plant, plant['water_end_time'].timestamp())
         queue.put((plant['water_end_time'].timestamp(), random(), plant))
 
 main()
