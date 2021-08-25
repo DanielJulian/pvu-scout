@@ -29,7 +29,7 @@ def main():
     feed_queue_with_yet_to_refresh_plants_db(database, queue)
     
     # Fetch outdated plants, update database and feed priority queue with new plants refresh times
-    #refresh_outdated_plants(database, queue)
+    refresh_outdated_plants(database, queue)
 
     # Initialize Manager
     manager = Manager(queue, discord_client)
