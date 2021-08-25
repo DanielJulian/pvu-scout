@@ -10,6 +10,11 @@ def insert_plant_query():
             INSERT OR IGNORE INTO plant(id,water_end_time) VALUES(?,?); 
             '''
 
+def delete_plant_query():
+    return  ''' 
+            DELETE FROM plant WHERE id=?;
+            '''
+
 def merge_plant_query():
     return  ''' 
             INSERT OR REPLACE INTO plant (id, water_end_time) VALUES(?,?); 

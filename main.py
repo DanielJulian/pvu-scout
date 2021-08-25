@@ -22,13 +22,14 @@ def main():
 
     # Connect Discord Bot
     discord_client = DiscordClient()
+    discord_client.set_database(database)
     _thread.start_new_thread(start_discord_client, (discord_client,))
 
     # Feed priority queue with plants that didnt yet reset from database
     feed_queue_with_yet_to_refresh_plants_db(database, queue)
     
     # Fetch outdated plants, update database and feed priority queue with new plants refresh times
-    refresh_outdated_plants(database, queue)
+    #refresh_outdated_plants(database, queue)
 
     # Initialize Manager
     manager = Manager(queue, discord_client)

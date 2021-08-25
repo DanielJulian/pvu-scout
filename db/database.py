@@ -50,6 +50,12 @@ class Database():
                 end_time = plant['water_end_time'].isoformat()
             cur.execute(query.insert_plant_query(), (plant_id, end_time))
 
+    def delete_plant(self, plant_id):
+        conn = self.create_connection()
+        with conn:
+            cur = conn.cursor()
+            cur.execute(query.delete_plant_query(), (plant_id,))
+
     def merge_plant(self, plant):
         conn = self.create_connection()
         with conn:
@@ -73,5 +79,13 @@ class Database():
         with conn:
             cur = conn.cursor()
             cur.execute(query.select_yet_to_refresh_plants())
+            rows = cur.fetchall()
+            return rows
+
+    def select_all_plants(self):
+        conn = self.create_connection()
+        with conn:
+            cur = conn.cursor()
+            cur.execute("SELECT id, water_end_time FROM plant")
             rows = cur.fetchall()
             return rows

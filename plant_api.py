@@ -1,6 +1,7 @@
 import requests
 import traceback
 from datetime import datetime, timedelta
+from db.database import Database
 
 plant_base_url = 'https://backend-farm.plantvsundead.com/farms/'
 
@@ -13,7 +14,6 @@ headers = {
     }
 
 def get_plant_data(plant_id):
-
     url = plant_base_url + plant_id
     response = requests.get(url, headers=headers)
     data = dict()
@@ -29,8 +29,12 @@ def get_plant_data(plant_id):
         if (response.status_code == 502):
             print("Bad Gateway")
             return None
-
         jsonresponse = response.json()
+
+        if (jsonresponse['status'] == 27): # status = 27 -> Plant doesn't exist anymore
+            print("Plant with id", plant_id, "doesn't exist anymore. Removing from DB")
+            Database().delete_plant(plant_id)
+        # Handle this (When its not my group) {'status': 444, 'data': {}}
 
         if (jsonresponse['status'] == 0): # status = 0 -> OK
             data['id'] = plant_id
