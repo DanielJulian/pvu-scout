@@ -8,7 +8,7 @@ import asyncio
 import time
 from datetime import datetime
 from datetime import timedelta
-
+from random import random
 
 def main():
     # Initialize Database
@@ -47,12 +47,14 @@ def refresh_outdated_plants(database, queue):
         _thread.start_new_thread(fetch_plants_data, (database, reduced_plant_list, queue,))
 
 def fetch_plants_data(database, plant_list, queue):
-    for plant_id in plant_list:
+    for plant in plant_list:
+        plant_id = plant['id']
         plant_data = get_plant_data(plant_id)
         if plant_data:
             print(plant_data)
-            database.insert_plant(plant_data)
-            queue.put((plant_data['waterEndTime'].timestamp(), plant_data))
+            database.merge_plant(plant_data)
+            queue.put((plant_data['water_end_time'].timestamp(), random(), plant_data))
+        time.sleep(1)
     print("Done fetching Data")
     
 def start_discord_client(discord_client):
@@ -76,6 +78,7 @@ def feed_queue_with_yet_to_refresh_plants_db(database, queue):
     plants = database.select_yet_to_refresh_plants()
     print(len(plants), "plants fetched")
     for plant in plants:
-        queue.put((datetime.strptime(plant['waterEndTime'].split(".")[0], '%Y-%m-%d %H:%M:%S').timestamp(), plant))
+        print(plant, plant['water_end_time'].timestamp())
+        queue.put((plant['water_end_time'].timestamp(), random(), plant))
 
 main()

@@ -1,4 +1,5 @@
 import requests
+import traceback
 from datetime import datetime, timedelta
 
 plant_base_url = 'https://backend-farm.plantvsundead.com/farms/'
@@ -17,17 +18,28 @@ def get_plant_data(plant_id):
     response = requests.get(url, headers=headers)
     data = dict()
     try:
+        if (response.status_code == 503):
+            print("API Unavailable")
+            return None
+        
+        if (response.status_code == 504):
+            print("Timeout")
+            return None
+
+        if (response.status_code == 502):
+            print("Bad Gateway")
+            return None
+
         jsonresponse = response.json()
 
         if (jsonresponse['status'] == 0): # status = 0 -> OK
             data['id'] = plant_id
-            data['url'] = "https://marketplace.plantvsundead.com/farm#/farm/" + jsonresponse['data']['_id']
-            waterEndTime = jsonresponse['data']['activeTools'][1]['endTime'].replace("T", " ").split(".")[0]
-            data['waterEndTime'] = datetime.strptime(waterEndTime, '%Y-%m-%d %H:%M:%S') - timedelta(hours=3)
+            water_end_time = jsonresponse['data']['activeTools'][1]['endTime'].replace("T", " ").split(".")[0]
+            data['water_end_time'] = datetime.strptime(water_end_time, '%Y-%m-%d %H:%M:%S') - timedelta(hours=3)
 
     except Exception as e:
         print(response)
-        print(e)
+        traceback.print_exc()
         return None
         
     return data
